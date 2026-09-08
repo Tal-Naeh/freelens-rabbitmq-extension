@@ -78,9 +78,8 @@ jobs:
               --no-git-checks \
               --tag ${dist_tag}
           else
-            NPM_CONFIG_PROVENANCE=true pnpm --color=always publish -r \
-              --no-git-checks \
-              --tag ${dist_tag}
+            # Trusted Publishing (OIDC): stage the version; a maintainer approves it on npmjs.com.
+            NPM_CONFIG_PROVENANCE=true npm stage publish --access public --tag ${dist_tag}
           fi
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
@@ -99,9 +98,8 @@ jobs:
               --no-git-checks \
               --tag ${dist_tag}
           else
-            NPM_CONFIG_PROVENANCE=true pnpm --color=always publish -r \
-              --no-git-checks \
-              --tag ${dist_tag}
+            # Trusted Publishing (OIDC): stage the version; a maintainer approves it on npmjs.com.
+            NPM_CONFIG_PROVENANCE=true npm stage publish --access public --tag ${dist_tag}
           fi
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
@@ -119,9 +117,8 @@ jobs:
               --no-git-checks \
               --tag ${dist_tag}
           else
-            NPM_CONFIG_PROVENANCE=true pnpm --color=always publish -r \
-              --no-git-checks \
-              --tag ${dist_tag}
+            # Trusted Publishing (OIDC): stage the version; a maintainer approves it on npmjs.com.
+            NPM_CONFIG_PROVENANCE=true npm stage publish --access public --tag ${dist_tag}
           fi
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}

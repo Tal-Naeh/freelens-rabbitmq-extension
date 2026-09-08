@@ -96,7 +96,7 @@ pnpm type:check      # tsc
 pnpm lint:check      # biome
 pnpm test:unit       # vitest (pure engine + UI helpers)
 pnpm build           # electron-vite → out/, then a Main-bundle smoke test
-pnpm pack            # prepack runs the build, then writes the .tgz in the repo root
+pnpm pack            # prepack runs the build, then writes the .tgz in the repo root (pnpm clean:tgz removes old ones)
 ```
 
 End-to-end against a real broker (Docker, no Kubernetes):
