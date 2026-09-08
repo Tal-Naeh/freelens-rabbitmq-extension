@@ -10,7 +10,7 @@ Two processes, as every Freelens extension:
 
 ## Engine (`src/main/rabbitmq/`)
 
-```
+```text
 discover ──▶ DiscoveredRabbitmqInfo[]      (discovery.ts; KubeReader seam)
                  │
       target ────┤ SessionManager.withSession(clusterId, target)

@@ -15,6 +15,8 @@ jobs:
 
     runs-on: ubuntu-24.04-arm
     environment: publishing
+    env:
+      NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 
     env:
       VITE_PRESERVE_MODULES: "false"
@@ -68,6 +70,7 @@ jobs:
 
       - name: Publish npm packages
         id: publish-npm
+        if: ${{ env.NPM_TOKEN != '' }}
         run: |
           case "${GITHUB_REF_NAME}" in
             *-*) dist_tag=next;;
@@ -88,7 +91,7 @@ jobs:
 
       - name: Publish npm packages (retry)
         id: publish-npm-2
-        if: steps.publish-npm.outcome == 'failure'
+        if: ${{ env.NPM_TOKEN != '' && steps.publish-npm.outcome == 'failure' }}
         run: |
           case "${GITHUB_REF_NAME}" in
             *-*) dist_tag=next;;
@@ -108,7 +111,7 @@ jobs:
         continue-on-error: true
 
       - name: Publish npm packages (retry 2)
-        if: steps.publish-npm-2.outcome == 'failure'
+        if: ${{ env.NPM_TOKEN != '' && steps.publish-npm-2.outcome == 'failure' }}
         run: |
           case "${GITHUB_REF_NAME}" in
             *-*) dist_tag=next;;

@@ -4,13 +4,13 @@ services:
     image: rabbitmq:4-management
     container_name: freelens-rabbitmq-e2e
     ports:
-      - "127.0.0.1:15672:15672"
-      - "127.0.0.1:5672:5672"
+      - 127.0.0.1:15672:15672
+      - 127.0.0.1:5672:5672
     environment:
       RABBITMQ_DEFAULT_USER: e2e
       RABBITMQ_DEFAULT_PASS: e2e-password
     healthcheck:
-      test: ["CMD", "rabbitmq-diagnostics", "-q", "check_running"]
+      test: [CMD, rabbitmq-diagnostics, -q, check_running]
       interval: 5s
       timeout: 5s
       retries: 20

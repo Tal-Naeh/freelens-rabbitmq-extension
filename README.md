@@ -77,7 +77,7 @@ If discovery finds the cluster but credentials fail, the error panel offers a us
 
 ## How connectivity works
 
-```
+```text
 Renderer (React pages) ── IPC ──▶ Main (Node)
                                    ├─ discovery:  Main.K8s (Freelens cluster connection) → CRDs, Services, Workloads
                                    ├─ credentials: Secrets → username/password (+ CA)
