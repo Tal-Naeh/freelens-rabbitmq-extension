@@ -117,6 +117,11 @@ pnpm pack
 Open Freelens → Extensions (`cmd`+`shift`+`E`) → paste the absolute path of the `.tgz` (or drag it into
 the window) → **Install** → enable. Rebuild + reinstall to iterate; Freelens hot-reloads on reinstall.
 
+## Releasing
+
+See [docs/publishing.md](docs/publishing.md): version bump → `vX.Y.Z` tag → CI stages the package on npm via Trusted
+Publishing and creates the GitHub Release → a maintainer approves the staged version.
+
 ## Repository layout
 
 - `src/common/` — IPC contract (channels + DTOs), constants, error shape shared by both processes.
