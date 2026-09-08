@@ -1,7 +1,7 @@
 {
   "name": "@tal-naeh/freelens-rabbitmq-extension",
-  "version": "0.2.1",
-  "description": "Freelens extension for RabbitMQ \u2014 cluster-native queue, exchange, connection and message inspection",
+  "version": "0.2.2",
+  "description": "Freelens extension for RabbitMQ — cluster-native queue, exchange, connection and message inspection",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Tal-Naeh/freelens-rabbitmq-extension.git",
@@ -16,7 +16,7 @@
     "node": ">= 22.0.0",
     "freelens": "^1.8.0"
   },
-  "copyright": "\u00a9 2026 Tal Naeh",
+  "copyright": "© 2026 Tal Naeh",
   "license": "MIT",
   "author": {
     "name": "Tal Naeh",

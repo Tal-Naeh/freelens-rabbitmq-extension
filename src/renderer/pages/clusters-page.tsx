@@ -81,33 +81,52 @@ export function ClustersPage(props: ClustersPageProps) {
           const ready = readiness(t);
           return (
             <section key={t.targetId} className="RmqPanel RmqClusterCard">
-              <div className="RmqClusterTitle">
-                <Renderer.Component.Icon material="mail" small />
-                <span>
-                  {t.namespace}/{t.name}
-                </span>
-                <Renderer.Component.Badge small label={t.provider} />
-                {ready.label ? <Renderer.Component.Badge small className={ready.tone} label={ready.label} /> : null}
+              <div className="RmqClusterHead">
+                <div className="RmqClusterTitle">
+                  <Renderer.Component.Icon material="mail" small />
+                  <span className="RmqClusterName" title={`${t.namespace}/${t.name}`}>
+                    {t.namespace}/{t.name}
+                  </span>
+                </div>
+                <Renderer.Component.Button
+                  primary
+                  label="Open"
+                  onClick={() => props.navigate(RABBITMQ_PAGE_IDS.overview, { target: t.targetId })}
+                />
               </div>
-              <Renderer.Component.Button
-                primary
-                label="Open"
-                onClick={() => props.navigate(RABBITMQ_PAGE_IDS.overview, { target: t.targetId })}
-              />
-              <div className="RmqClusterFacts">
-                <span>Version: {t.version ?? "unknown"}</span>
-                <span>Replicas: {t.replicas ?? "?"}</span>
-                <span>
-                  Management: {String(t.managementPort)}
-                  {t.managementTls ? " (TLS)" : ""}
-                </span>
-                <span>
-                  AMQP: {t.amqpPort ?? "?"}
-                  {t.amqpTls ? " (TLS)" : ""}
-                </span>
-                <span>Service: {t.serviceName ?? "—"}</span>
-                <span>Credentials: {credentialLabel(t)}</span>
+              <div className="RmqClusterTags">
+                <span className="RmqTag">{t.provider}</span>
+                {ready.label ? <span className={`RmqTag ${ready.tone}`.trim()}>{ready.label}</span> : null}
+                {t.version ? <span className="RmqTag">v{t.version}</span> : null}
               </div>
+              <dl className="RmqClusterFacts">
+                <div>
+                  <dt>Replicas</dt>
+                  <dd>{t.replicas ?? "?"}</dd>
+                </div>
+                <div>
+                  <dt>Management</dt>
+                  <dd>
+                    {String(t.managementPort)}
+                    {t.managementTls ? " (TLS)" : ""}
+                  </dd>
+                </div>
+                <div>
+                  <dt>AMQP</dt>
+                  <dd>
+                    {t.amqpPort ?? "?"}
+                    {t.amqpTls ? " (TLS)" : ""}
+                  </dd>
+                </div>
+                <div>
+                  <dt>Service</dt>
+                  <dd title={t.serviceName}>{t.serviceName ?? "—"}</dd>
+                </div>
+                <div className="RmqFactWide">
+                  <dt>Credentials</dt>
+                  <dd title={credentialLabel(t)}>{credentialLabel(t)}</dd>
+                </div>
+              </dl>
             </section>
           );
         })}

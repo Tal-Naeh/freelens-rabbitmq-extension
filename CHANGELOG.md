@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.2.2
+
+- Fix: Clusters page cards — name truncates with an ellipsis instead of wrapping, tags wrap inside the card, facts laid out as a grid; no more overlap/overflow.
+
 ## 0.2.1
 
 - Fix: table cells that carried a tooltip `title` rendered the tooltip text instead of the value (Memory, Disk free, Client, Prefetch columns).
