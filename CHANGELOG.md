@@ -1,8 +1,10 @@
 # Changelog
 
-## 0.1.4 (unreleased)
+## 0.1.5 (unreleased)
 
 Initial implementation.
+
+- Fix: queue/exchange detail drawers and the Connections tabs keep their state across background refreshes (React-owned selection state; URL used only for deep links).
 
 - Resizable table columns: drag a header cell's right edge, double-click it to reset; widths persist per table.
 

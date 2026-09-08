@@ -14,7 +14,7 @@ import {
 } from "../components/page-shell";
 import { type ColumnSpec, useResizableColumns } from "../components/resizable-columns";
 import { formatBytes, formatNumber, formatRate, matchesQuery } from "../format";
-import { useDebounced, usePageParam, useResource } from "../hooks";
+import { useDebounced, usePageParam, useResource, useSelectionParam } from "../hooks";
 import { RABBITMQ_PAGE_IDS } from "../navigation";
 import { useWriteMode } from "../write-mode-store";
 import { useTargetPage } from "./page-deps";
@@ -61,8 +61,8 @@ export function QueuesPage(props: QueuesPageProps) {
   const writeMode = useWriteMode(props.writeMode, target?.targetId);
   const [query, setQuery] = usePageParam(props.params?.query);
   const [vhost, setVhost] = usePageParam(props.params?.vhost);
-  const [queueRef, setQueueRef] = usePageParam(props.params?.queue);
-  const [view, setView] = usePageParam(props.params?.view);
+  const [queueRef, setQueueRef] = useSelectionParam(props.params?.queue);
+  const [view, setView] = useSelectionParam(props.params?.view);
   const debouncedQuery = useDebounced(query);
 
   const queues = useResource(

@@ -13,7 +13,7 @@ import {
 } from "../components/page-shell";
 import { type ColumnSpec, useResizableColumns } from "../components/resizable-columns";
 import { formatRate, matchesQuery } from "../format";
-import { useDebounced, usePageParam, useResource } from "../hooks";
+import { useDebounced, usePageParam, useResource, useSelectionParam } from "../hooks";
 import { RABBITMQ_PAGE_IDS } from "../navigation";
 import { useWriteMode } from "../write-mode-store";
 import { ExchangeDetailDrawer } from "./exchange-detail";
@@ -51,7 +51,7 @@ export function ExchangesPage(props: ExchangesPageProps) {
   const writeMode = useWriteMode(props.writeMode, target?.targetId);
   const [query, setQuery] = usePageParam(props.params?.query);
   const [vhost, setVhost] = usePageParam(props.params?.vhost);
-  const [exchangeRef, setExchangeRef] = usePageParam(props.params?.exchange);
+  const [exchangeRef, setExchangeRef] = useSelectionParam(props.params?.exchange);
   const debouncedQuery = useDebounced(query);
 
   const exchanges = useResource(

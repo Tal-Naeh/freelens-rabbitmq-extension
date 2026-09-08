@@ -74,6 +74,34 @@ export function usePageParam(param: Renderer.Navigation.PageParam<string> | unde
   return [param ? (param.get() ?? "") : local, set];
 }
 
+/**
+ * URL-backed selection whose current value is OWNED BY REACT STATE. Use it for anything that must
+ * survive background refreshes (an open drawer, the active tab): the URL is written for deep links
+ * and read on mount or when it changes to a non-empty value, but a URL param going missing during a
+ * re-render can never close the drawer.
+ */
+export function useSelectionParam(
+  param: Renderer.Navigation.PageParam<string> | undefined,
+): [string, (v: string) => void] {
+  const urlNow = param?.get() ?? "";
+  const [value, setValue] = useState(urlNow);
+  const lastUrl = useRef(urlNow);
+  useEffect(() => {
+    if (urlNow === lastUrl.current) return;
+    lastUrl.current = urlNow;
+    if (urlNow) setValue(urlNow);
+  }, [urlNow]);
+  const set = useCallback(
+    (next: string) => {
+      lastUrl.current = next;
+      setValue(next);
+      param?.set(next, { replaceHistory: true });
+    },
+    [param],
+  );
+  return [value, set];
+}
+
 /** Debounce a fast-changing value (search boxes). */
 export function useDebounced<T>(value: T, delayMs = 200): T {
   const [debounced, setDebounced] = useState(value);

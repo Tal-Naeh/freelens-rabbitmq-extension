@@ -15,7 +15,7 @@ import {
 } from "../components/page-shell";
 import { type ColumnSpec, useResizableColumns } from "../components/resizable-columns";
 import { formatBytesRate, formatNumber, formatRate, formatTimestamp, matchesQuery, shortNodeName } from "../format";
-import { useDebounced, usePageParam, useResource } from "../hooks";
+import { useDebounced, usePageParam, useResource, useSelectionParam } from "../hooks";
 import { RABBITMQ_PAGE_IDS } from "../navigation";
 import { useWriteMode } from "../write-mode-store";
 import { ConsumersTable } from "./consumers-table";
@@ -249,7 +249,7 @@ export function ConnectionsPage(props: ConnectionsPageProps) {
   const { target, selection } = page;
   const writeMode = useWriteMode(props.writeMode, target?.targetId);
   const [query, setQuery] = usePageParam(props.params?.query);
-  const [rawView, setView] = usePageParam(props.params?.view);
+  const [rawView, setView] = useSelectionParam(props.params?.view);
   const view = (VIEWS.some((v) => v.value === rawView) ? rawView : "connections") as View;
   const debouncedQuery = useDebounced(query);
   const scope = target ? `${page.clusterKey}:${target.targetId}` : undefined;
