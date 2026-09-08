@@ -1,5 +1,6 @@
 import { Renderer } from "@freelensapp/extensions";
 import { useEffect, useState } from "react";
+import { EXTENSION_VERSION } from "../../common/version";
 import styles from "../styles.scss?inline";
 
 import type { ReactNode } from "react";
@@ -40,7 +41,12 @@ export function PageShell({
           <h1>{title}</h1>
           {subtitle ? <span>{subtitle}</span> : null}
         </div>
-        {actions ? <div className="RmqHeaderActions">{actions}</div> : null}
+        <div className="RmqHeaderActions">
+          {actions}
+          <span className="RmqVersion" title="freelens-rabbitmq-extension version">
+            v{EXTENSION_VERSION}
+          </span>
+        </div>
       </header>
       {children}
     </div>

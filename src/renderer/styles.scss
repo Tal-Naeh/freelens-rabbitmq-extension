@@ -1,5 +1,5 @@
 .RmqPage {
-  --rmq-border: var(--borderColor, rgba(127, 127, 127, 0.22));
+  --rmq-border: rgba(127, 127, 127, 0.28);
   --rmq-muted: var(--textColorSecondary, rgba(127, 127, 127, 0.92));
   --rmq-panel: var(--contentColor, rgba(127, 127, 127, 0.06));
   --rmq-ok: var(--colorOk, #3dbd6b);
@@ -73,6 +73,11 @@
 }
 
 .RmqHeader {
+  .RmqVersion {
+    font-size: 11px;
+    color: var(--rmq-muted);
+    font-family: var(--font-monospace, ui-monospace, Menlo, monospace);
+  }
   display: flex;
   align-items: center;
   justify-content: space-between;

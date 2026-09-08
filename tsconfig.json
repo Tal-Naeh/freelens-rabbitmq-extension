@@ -3,6 +3,7 @@
   "include": ["*.ts", "src/**/*", "test/**/*", "integration/fixtures/**/*"],
   "compilerOptions": {
     "composite": true,
+    "resolveJsonModule": true,
     "esModuleInterop": true,
     "moduleResolution": "node10",
     "jsx": "react-jsx",
