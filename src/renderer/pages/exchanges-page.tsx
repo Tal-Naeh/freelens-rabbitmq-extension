@@ -137,14 +137,20 @@ export function ExchangesPage(props: ExchangesPageProps) {
             }}
           >
             <Renderer.Component.TableHead sticky nowrap>
-              <Renderer.Component.TableCell sortBy="name">Name</Renderer.Component.TableCell>
-              <Renderer.Component.TableCell sortBy="vhost">Vhost</Renderer.Component.TableCell>
-              <Renderer.Component.TableCell sortBy="type">Type</Renderer.Component.TableCell>
-              <Renderer.Component.TableCell>Features</Renderer.Component.TableCell>
-              <Renderer.Component.TableCell sortBy="in" className="RmqNum">
+              <Renderer.Component.TableCell className="RmqColGrow" sortBy="name">
+                Name
+              </Renderer.Component.TableCell>
+              <Renderer.Component.TableCell className="RmqColXS" sortBy="vhost">
+                Vhost
+              </Renderer.Component.TableCell>
+              <Renderer.Component.TableCell className="RmqColM" sortBy="type">
+                Type
+              </Renderer.Component.TableCell>
+              <Renderer.Component.TableCell className="RmqColL">Features</Renderer.Component.TableCell>
+              <Renderer.Component.TableCell sortBy="in" className="RmqNum RmqColM">
                 Publish in
               </Renderer.Component.TableCell>
-              <Renderer.Component.TableCell sortBy="out" className="RmqNum">
+              <Renderer.Component.TableCell sortBy="out" className="RmqNum RmqColM">
                 Publish out
               </Renderer.Component.TableCell>
             </Renderer.Component.TableHead>
@@ -156,16 +162,16 @@ export function ExchangesPage(props: ExchangesPageProps) {
                 className="clickable"
                 onClick={() => openExchange(x.vhost, x.name)}
               >
-                <Renderer.Component.TableCell title={x.name}>
+                <Renderer.Component.TableCell className="RmqColGrow" title={x.name}>
                   <span className="RmqMono RmqEllipsis">
                     {x.name || <span className="RmqMuted">(AMQP default)</span>}
                   </span>
                 </Renderer.Component.TableCell>
-                <Renderer.Component.TableCell>
+                <Renderer.Component.TableCell className="RmqColXS">
                   <span className="RmqMono">{x.vhost}</span>
                 </Renderer.Component.TableCell>
-                <Renderer.Component.TableCell>{x.type}</Renderer.Component.TableCell>
-                <Renderer.Component.TableCell>
+                <Renderer.Component.TableCell className="RmqColM">{x.type}</Renderer.Component.TableCell>
+                <Renderer.Component.TableCell className="RmqColL">
                   <span className="RmqBadges">
                     {x.durable ? <Renderer.Component.Badge small label="D" tooltip="Durable" /> : null}
                     {x.autoDelete ? <Renderer.Component.Badge small label="AD" tooltip="Auto-delete" /> : null}
@@ -176,10 +182,10 @@ export function ExchangesPage(props: ExchangesPageProps) {
                     ) : null}
                   </span>
                 </Renderer.Component.TableCell>
-                <Renderer.Component.TableCell className="RmqNum">
+                <Renderer.Component.TableCell className="RmqNum RmqColM">
                   {formatRate(x.publishIn.rate)}
                 </Renderer.Component.TableCell>
-                <Renderer.Component.TableCell className="RmqNum">
+                <Renderer.Component.TableCell className="RmqNum RmqColM">
                   {formatRate(x.publishOut.rate)}
                 </Renderer.Component.TableCell>
               </Renderer.Component.TableRow>

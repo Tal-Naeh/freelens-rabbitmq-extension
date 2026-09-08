@@ -27,14 +27,20 @@ export function BindingsTable({
       sortable={{ source: (b) => b.source, destination: (b) => b.destination, routingKey: (b) => b.routingKey }}
     >
       <Renderer.Component.TableHead sticky={false} nowrap>
-        <Renderer.Component.TableCell sortBy="source">Source exchange</Renderer.Component.TableCell>
-        <Renderer.Component.TableCell sortBy="routingKey">Routing key</Renderer.Component.TableCell>
-        <Renderer.Component.TableCell sortBy="destination">Destination</Renderer.Component.TableCell>
-        <Renderer.Component.TableCell>Arguments</Renderer.Component.TableCell>
+        <Renderer.Component.TableCell className="RmqColGrow" sortBy="source">
+          Source exchange
+        </Renderer.Component.TableCell>
+        <Renderer.Component.TableCell className="RmqColGrowS" sortBy="routingKey">
+          Routing key
+        </Renderer.Component.TableCell>
+        <Renderer.Component.TableCell className="RmqColGrow" sortBy="destination">
+          Destination
+        </Renderer.Component.TableCell>
+        <Renderer.Component.TableCell className="RmqColGrow">Arguments</Renderer.Component.TableCell>
       </Renderer.Component.TableHead>
       {bindings.map((b, i) => (
         <Renderer.Component.TableRow key={`${b.source}|${b.destination}|${b.routingKey}|${i}`} sortItem={b} nowrap>
-          <Renderer.Component.TableCell>
+          <Renderer.Component.TableCell className="RmqColGrow">
             {b.source ? (
               onOpenExchange ? (
                 <span className="RmqLink RmqMono" onClick={() => onOpenExchange(b.vhost, b.source)}>
@@ -47,10 +53,10 @@ export function BindingsTable({
               <span className="RmqMuted">(default exchange)</span>
             )}
           </Renderer.Component.TableCell>
-          <Renderer.Component.TableCell>
+          <Renderer.Component.TableCell className="RmqColGrowS">
             <span className="RmqMono">{b.routingKey || <span className="RmqMuted">(empty)</span>}</span>
           </Renderer.Component.TableCell>
-          <Renderer.Component.TableCell>
+          <Renderer.Component.TableCell className="RmqColGrow">
             <Renderer.Component.Badge small label={b.destinationType} />{" "}
             {b.destinationType === "queue" && onOpenQueue ? (
               <span className="RmqLink RmqMono" onClick={() => onOpenQueue(b.vhost, b.destination)}>
@@ -64,7 +70,7 @@ export function BindingsTable({
               <span className="RmqMono">{b.destination}</span>
             )}
           </Renderer.Component.TableCell>
-          <Renderer.Component.TableCell>
+          <Renderer.Component.TableCell className="RmqColGrow">
             <ArgumentsView args={b.arguments} />
           </Renderer.Component.TableCell>
         </Renderer.Component.TableRow>
