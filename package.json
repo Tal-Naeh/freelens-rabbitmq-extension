@@ -1,6 +1,6 @@
 {
   "name": "@freelensapp/rabbitmq-extension",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Freelens extension for RabbitMQ — cluster-native queue, exchange, connection and message inspection",
   "repository": {
     "type": "git",
@@ -43,9 +43,9 @@
     "build": "electron-vite build && pnpm smoke:main",
     "build:production": "VITE_PRESERVE_MODULES=false electron-vite build && pnpm smoke:main",
     "build:force": "electron-vite build",
+    "prepack": "pnpm build && pnpm clean:tgz",
     "bump-version": "pnpm version --no-commit-hooks --no-git-tag-version",
     "pack:dev": "pnpm bump-version prerelease && pnpm build && pnpm clean:tgz && pnpm pack && pnpm dlx shx@0.4.0 ls \"$PWD/*.tgz\"",
-    "pack": "pnpm build && pnpm clean:tgz && pnpm pack",
     "clean": "pnpm clean:out",
     "clean:node_modules": "pnpm dlx shx@0.4.0 rm -rf node_modules",
     "clean:out": "pnpm dlx shx@0.4.0 rm -rf out",
