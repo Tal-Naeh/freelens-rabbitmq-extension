@@ -17,8 +17,6 @@ jobs:
     environment: publishing
     env:
       NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-
-    env:
       VITE_PRESERVE_MODULES: "false"
 
     steps:
@@ -128,6 +126,8 @@ jobs:
           fi
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+        continue-on-error: true
+
       - name: Create release
         uses: softprops/action-gh-release@v3
         with:
