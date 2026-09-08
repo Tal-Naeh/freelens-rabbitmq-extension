@@ -22,6 +22,8 @@ architecture, tailored for RabbitMQ.
   (held in the Main process only, never persisted).
 - **Lightweight transport** — no AMQP client. A Kubernetes SPDY port-forward to one broker pod's
   management port plus a small JSON-over-HTTP client on Node's core `http`/`https`.
+- **Resizable columns** — drag the right edge of any table header to resize, double-click it to reset;
+  widths are remembered per table.
 - **Views**
   - *Clusters*: every discovered target with provider, version, replicas, ports, credential source.
   - *Overview*: object totals, message rates, cluster/session facts, per-node memory/disk/FD gauges and alarms.

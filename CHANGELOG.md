@@ -1,8 +1,10 @@
 # Changelog
 
-## 0.1.1 (unreleased)
+## 0.1.2 (unreleased)
 
 Initial implementation.
+
+- Resizable table columns: drag a header cell's right edge, double-click it to reset; widths persist per table.
 
 - Discovery of `RabbitmqCluster` CRs and Management-API Services (operator, Bitnami, generic).
 - Credential resolution from operator default-user Secrets and workload env Secret refs; manual override.

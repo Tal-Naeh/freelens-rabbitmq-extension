@@ -11,6 +11,7 @@ import {
   TargetSelector,
   WriteModeToggle,
 } from "../components/page-shell";
+import { type ColumnSpec, useResizableColumns } from "../components/resizable-columns";
 import { formatBytes, formatDuration, formatNumber, formatPercent, formatRate, shortNodeName } from "../format";
 import { useResource } from "../hooks";
 import { RABBITMQ_PAGE_IDS } from "../navigation";
@@ -36,7 +37,19 @@ function Bar({ used, total, alarm }: { used?: number; total?: number; alarm: boo
   );
 }
 
+const RABBITMQ_NODES_COLUMNS: ColumnSpec[] = [
+  { id: "name", width: 200, minWidth: 120 },
+  { id: "state", width: 170 },
+  { id: "uptime", width: 90 },
+  { id: "memory", width: 240, grow: true, minWidth: 140 },
+  { id: "disk", width: 120 },
+  { id: "fds", width: 170 },
+  { id: "sockets", width: 120 },
+  { id: "procs", width: 150 },
+];
+
 function NodesTable({ nodes }: { nodes: NodeDto[] }) {
+  const col = useResizableColumns("rabbitmq-nodes", RABBITMQ_NODES_COLUMNS);
   return (
     <Renderer.Component.Table<NodeDto>
       className="RmqNodesTable"
@@ -48,37 +61,37 @@ function NodesTable({ nodes }: { nodes: NodeDto[] }) {
       sortable={{ name: (n) => n.name }}
     >
       <Renderer.Component.TableHead sticky={false} nowrap>
-        <Renderer.Component.TableCell className="RmqColXL" sortBy="name">
+        <Renderer.Component.TableCell {...col.head("name")} sortBy="name">
           Node
         </Renderer.Component.TableCell>
-        <Renderer.Component.TableCell className="RmqColL">State</Renderer.Component.TableCell>
-        <Renderer.Component.TableCell className="RmqColS">Uptime</Renderer.Component.TableCell>
-        <Renderer.Component.TableCell className="RmqColGrow">Memory</Renderer.Component.TableCell>
-        <Renderer.Component.TableCell className="RmqColM">Disk free</Renderer.Component.TableCell>
-        <Renderer.Component.TableCell className="RmqColL">File descriptors</Renderer.Component.TableCell>
-        <Renderer.Component.TableCell className="RmqColM">Sockets</Renderer.Component.TableCell>
-        <Renderer.Component.TableCell className="RmqColL">Erlang processes</Renderer.Component.TableCell>
+        <Renderer.Component.TableCell {...col.head("state")}>State</Renderer.Component.TableCell>
+        <Renderer.Component.TableCell {...col.head("uptime")}>Uptime</Renderer.Component.TableCell>
+        <Renderer.Component.TableCell {...col.head("memory")}>Memory</Renderer.Component.TableCell>
+        <Renderer.Component.TableCell {...col.head("disk")}>Disk free</Renderer.Component.TableCell>
+        <Renderer.Component.TableCell {...col.head("fds")}>File descriptors</Renderer.Component.TableCell>
+        <Renderer.Component.TableCell {...col.head("sockets")}>Sockets</Renderer.Component.TableCell>
+        <Renderer.Component.TableCell {...col.head("procs")}>Erlang processes</Renderer.Component.TableCell>
       </Renderer.Component.TableHead>
       {nodes.map((n) => {
         const diskLow = n.diskFree !== undefined && n.diskFreeLimit !== undefined && n.diskFree < n.diskFreeLimit * 2;
         return (
           <Renderer.Component.TableRow key={n.name} sortItem={n} nowrap>
-            <Renderer.Component.TableCell className="RmqColXL" title={n.name}>
+            <Renderer.Component.TableCell {...col.cell("name")} title={n.name}>
               <span className="RmqMono">{shortNodeName(n.name)}</span>
               {n.partitions.length > 0 ? (
                 <Renderer.Component.Badge small label="PARTITIONED" className="error" />
               ) : null}
             </Renderer.Component.TableCell>
-            <Renderer.Component.TableCell className="RmqColL">
+            <Renderer.Component.TableCell {...col.cell("state")}>
               <StatusDot state={n.running ? "running" : "down"} />
               {n.memAlarm ? <Renderer.Component.Badge small label="mem alarm" className="error" /> : null}
               {n.diskFreeAlarm ? <Renderer.Component.Badge small label="disk alarm" className="error" /> : null}
             </Renderer.Component.TableCell>
-            <Renderer.Component.TableCell className="RmqColS">
+            <Renderer.Component.TableCell {...col.cell("uptime")}>
               {formatDuration(n.uptimeMs)}
             </Renderer.Component.TableCell>
             <Renderer.Component.TableCell
-              className="RmqColGrow"
+              {...col.cell("memory")}
               title={`${formatBytes(n.memUsed)} of ${formatBytes(n.memLimit)} high-watermark`}
             >
               <div>
@@ -86,16 +99,16 @@ function NodesTable({ nodes }: { nodes: NodeDto[] }) {
               </div>
               <Bar used={n.memUsed} total={n.memLimit} alarm={n.memAlarm} />
             </Renderer.Component.TableCell>
-            <Renderer.Component.TableCell className="RmqColM" title={`limit ${formatBytes(n.diskFreeLimit)}`}>
+            <Renderer.Component.TableCell {...col.cell("disk")} title={`limit ${formatBytes(n.diskFreeLimit)}`}>
               <span className={diskLow || n.diskFreeAlarm ? "RmqState error" : ""}>{formatBytes(n.diskFree)}</span>
             </Renderer.Component.TableCell>
-            <Renderer.Component.TableCell className="RmqColL">
+            <Renderer.Component.TableCell {...col.cell("fds")}>
               {formatNumber(n.fdUsed)} / {formatNumber(n.fdTotal)} ({formatPercent(n.fdUsed, n.fdTotal)})
             </Renderer.Component.TableCell>
-            <Renderer.Component.TableCell className="RmqColM">
+            <Renderer.Component.TableCell {...col.cell("sockets")}>
               {formatNumber(n.socketsUsed)} / {formatNumber(n.socketsTotal)}
             </Renderer.Component.TableCell>
-            <Renderer.Component.TableCell className="RmqColL">
+            <Renderer.Component.TableCell {...col.cell("procs")}>
               {formatNumber(n.procUsed)} / {formatNumber(n.procTotal)}
             </Renderer.Component.TableCell>
           </Renderer.Component.TableRow>

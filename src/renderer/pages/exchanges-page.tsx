@@ -11,6 +11,7 @@ import {
   Toolbar,
   WriteModeToggle,
 } from "../components/page-shell";
+import { type ColumnSpec, useResizableColumns } from "../components/resizable-columns";
 import { formatRate, matchesQuery } from "../format";
 import { useDebounced, usePageParam, useResource } from "../hooks";
 import { RABBITMQ_PAGE_IDS } from "../navigation";
@@ -34,7 +35,17 @@ function decodeRef(ref: string): { vhost: string; name: string } | undefined {
   return { vhost: decodeURIComponent(ref.slice(0, at)), name: decodeURIComponent(ref.slice(at + 1)) };
 }
 
+const RABBITMQ_EXCHANGES_COLUMNS: ColumnSpec[] = [
+  { id: "name", width: 300, grow: true, minWidth: 140 },
+  { id: "vhost", width: 80 },
+  { id: "type", width: 110 },
+  { id: "features", width: 170 },
+  { id: "in", width: 120, numeric: true },
+  { id: "out", width: 120, numeric: true },
+];
+
 export function ExchangesPage(props: ExchangesPageProps) {
+  const col = useResizableColumns("rabbitmq-exchanges", RABBITMQ_EXCHANGES_COLUMNS);
   const page = useTargetPage(props, props.params?.target);
   const { target, selection } = page;
   const writeMode = useWriteMode(props.writeMode, target?.targetId);
@@ -137,20 +148,20 @@ export function ExchangesPage(props: ExchangesPageProps) {
             }}
           >
             <Renderer.Component.TableHead sticky nowrap>
-              <Renderer.Component.TableCell className="RmqColGrow" sortBy="name">
+              <Renderer.Component.TableCell {...col.head("name")} sortBy="name">
                 Name
               </Renderer.Component.TableCell>
-              <Renderer.Component.TableCell className="RmqColXS" sortBy="vhost">
+              <Renderer.Component.TableCell {...col.head("vhost")} sortBy="vhost">
                 Vhost
               </Renderer.Component.TableCell>
-              <Renderer.Component.TableCell className="RmqColM" sortBy="type">
+              <Renderer.Component.TableCell {...col.head("type")} sortBy="type">
                 Type
               </Renderer.Component.TableCell>
-              <Renderer.Component.TableCell className="RmqColL">Features</Renderer.Component.TableCell>
-              <Renderer.Component.TableCell sortBy="in" className="RmqNum RmqColM">
+              <Renderer.Component.TableCell {...col.head("features")}>Features</Renderer.Component.TableCell>
+              <Renderer.Component.TableCell {...col.head("in")} sortBy="in">
                 Publish in
               </Renderer.Component.TableCell>
-              <Renderer.Component.TableCell sortBy="out" className="RmqNum RmqColM">
+              <Renderer.Component.TableCell {...col.head("out")} sortBy="out">
                 Publish out
               </Renderer.Component.TableCell>
             </Renderer.Component.TableHead>
@@ -162,16 +173,16 @@ export function ExchangesPage(props: ExchangesPageProps) {
                 className="clickable"
                 onClick={() => openExchange(x.vhost, x.name)}
               >
-                <Renderer.Component.TableCell className="RmqColGrow" title={x.name}>
+                <Renderer.Component.TableCell {...col.cell("name")} title={x.name}>
                   <span className="RmqMono RmqEllipsis">
                     {x.name || <span className="RmqMuted">(AMQP default)</span>}
                   </span>
                 </Renderer.Component.TableCell>
-                <Renderer.Component.TableCell className="RmqColXS">
+                <Renderer.Component.TableCell {...col.cell("vhost")}>
                   <span className="RmqMono">{x.vhost}</span>
                 </Renderer.Component.TableCell>
-                <Renderer.Component.TableCell className="RmqColM">{x.type}</Renderer.Component.TableCell>
-                <Renderer.Component.TableCell className="RmqColL">
+                <Renderer.Component.TableCell {...col.cell("type")}>{x.type}</Renderer.Component.TableCell>
+                <Renderer.Component.TableCell {...col.cell("features")}>
                   <span className="RmqBadges">
                     {x.durable ? <Renderer.Component.Badge small label="D" tooltip="Durable" /> : null}
                     {x.autoDelete ? <Renderer.Component.Badge small label="AD" tooltip="Auto-delete" /> : null}
@@ -182,10 +193,10 @@ export function ExchangesPage(props: ExchangesPageProps) {
                     ) : null}
                   </span>
                 </Renderer.Component.TableCell>
-                <Renderer.Component.TableCell className="RmqNum RmqColM">
+                <Renderer.Component.TableCell {...col.cell("in")}>
                   {formatRate(x.publishIn.rate)}
                 </Renderer.Component.TableCell>
-                <Renderer.Component.TableCell className="RmqNum RmqColM">
+                <Renderer.Component.TableCell {...col.cell("out")}>
                   {formatRate(x.publishOut.rate)}
                 </Renderer.Component.TableCell>
               </Renderer.Component.TableRow>

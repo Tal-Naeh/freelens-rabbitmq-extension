@@ -13,6 +13,7 @@ import {
   Toolbar,
   WriteModeToggle,
 } from "../components/page-shell";
+import { type ColumnSpec, useResizableColumns } from "../components/resizable-columns";
 import { formatBytesRate, formatNumber, formatRate, formatTimestamp, matchesQuery, shortNodeName } from "../format";
 import { useDebounced, usePageParam, useResource } from "../hooks";
 import { RABBITMQ_PAGE_IDS } from "../navigation";
@@ -35,7 +36,21 @@ const VIEWS: { value: View; label: string }[] = [
   { value: "consumers", label: "Consumers" },
 ];
 
+const RABBITMQ_CONNECTIONS_COLUMNS: ColumnSpec[] = [
+  { id: "name", width: 280, grow: true, minWidth: 140 },
+  { id: "client", width: 160 },
+  { id: "user", width: 110 },
+  { id: "vhost", width: 80 },
+  { id: "state", width: 110 },
+  { id: "protocol", width: 130 },
+  { id: "channels", width: 90, numeric: true },
+  { id: "recv", width: 110, numeric: true },
+  { id: "send", width: 110, numeric: true },
+  { id: "since", width: 170 },
+];
+
 function ConnectionsTable({ items }: { items: ConnectionDto[] }) {
+  const col = useResizableColumns("rabbitmq-connections", RABBITMQ_CONNECTIONS_COLUMNS);
   return (
     <Renderer.Component.Table<ConnectionDto>
       tableId="rabbitmq-connections"
@@ -55,64 +70,64 @@ function ConnectionsTable({ items }: { items: ConnectionDto[] }) {
       }}
     >
       <Renderer.Component.TableHead sticky nowrap>
-        <Renderer.Component.TableCell className="RmqColGrow" sortBy="name">
+        <Renderer.Component.TableCell {...col.head("name")} sortBy="name">
           Connection
         </Renderer.Component.TableCell>
-        <Renderer.Component.TableCell className="RmqColL">Client</Renderer.Component.TableCell>
-        <Renderer.Component.TableCell className="RmqColM" sortBy="user">
+        <Renderer.Component.TableCell {...col.head("client")}>Client</Renderer.Component.TableCell>
+        <Renderer.Component.TableCell {...col.head("user")} sortBy="user">
           User
         </Renderer.Component.TableCell>
-        <Renderer.Component.TableCell className="RmqColXS" sortBy="vhost">
+        <Renderer.Component.TableCell {...col.head("vhost")} sortBy="vhost">
           Vhost
         </Renderer.Component.TableCell>
-        <Renderer.Component.TableCell className="RmqColM" sortBy="state">
+        <Renderer.Component.TableCell {...col.head("state")} sortBy="state">
           State
         </Renderer.Component.TableCell>
-        <Renderer.Component.TableCell className="RmqColM">Protocol</Renderer.Component.TableCell>
-        <Renderer.Component.TableCell sortBy="channels" className="RmqNum RmqColS">
+        <Renderer.Component.TableCell {...col.head("protocol")}>Protocol</Renderer.Component.TableCell>
+        <Renderer.Component.TableCell {...col.head("channels")} sortBy="channels">
           Channels
         </Renderer.Component.TableCell>
-        <Renderer.Component.TableCell sortBy="recv" className="RmqNum RmqColM">
+        <Renderer.Component.TableCell {...col.head("recv")} sortBy="recv">
           From client
         </Renderer.Component.TableCell>
-        <Renderer.Component.TableCell sortBy="send" className="RmqNum RmqColM">
+        <Renderer.Component.TableCell {...col.head("send")} sortBy="send">
           To client
         </Renderer.Component.TableCell>
-        <Renderer.Component.TableCell className="RmqColL" sortBy="since">
+        <Renderer.Component.TableCell {...col.head("since")} sortBy="since">
           Connected
         </Renderer.Component.TableCell>
       </Renderer.Component.TableHead>
       {items.map((c) => (
         <Renderer.Component.TableRow key={c.name} sortItem={c} nowrap>
-          <Renderer.Component.TableCell className="RmqColGrow" title={c.name}>
+          <Renderer.Component.TableCell {...col.cell("name")} title={c.name}>
             <span className="RmqMono RmqEllipsis">{c.clientProperties.connectionName ?? c.name}</span>
             {c.clientProperties.connectionName ? <span className="RmqMuted RmqEllipsis RmqMono">{c.name}</span> : null}
             {c.node ? <span className="RmqMuted"> {shortNodeName(c.node)}</span> : null}
           </Renderer.Component.TableCell>
-          <Renderer.Component.TableCell className="RmqColL" title={c.clientProperties.platform}>
+          <Renderer.Component.TableCell {...col.cell("client")} title={c.clientProperties.platform}>
             {[c.clientProperties.product, c.clientProperties.version].filter(Boolean).join(" ") || "—"}
           </Renderer.Component.TableCell>
-          <Renderer.Component.TableCell className="RmqColM">{c.user}</Renderer.Component.TableCell>
-          <Renderer.Component.TableCell className="RmqColXS">
+          <Renderer.Component.TableCell {...col.cell("user")}>{c.user}</Renderer.Component.TableCell>
+          <Renderer.Component.TableCell {...col.cell("vhost")}>
             <span className="RmqMono">{c.vhost}</span>
           </Renderer.Component.TableCell>
-          <Renderer.Component.TableCell className="RmqColM">
+          <Renderer.Component.TableCell {...col.cell("state")}>
             <StatusDot state={c.state} />
           </Renderer.Component.TableCell>
-          <Renderer.Component.TableCell className="RmqColM">
+          <Renderer.Component.TableCell {...col.cell("protocol")}>
             {c.protocol}
             {c.ssl ? <Renderer.Component.Badge small label="TLS" tooltip={c.sslProtocol} /> : null}
           </Renderer.Component.TableCell>
-          <Renderer.Component.TableCell className="RmqNum RmqColS">
+          <Renderer.Component.TableCell {...col.cell("channels")}>
             {formatNumber(c.channels)}
           </Renderer.Component.TableCell>
-          <Renderer.Component.TableCell className="RmqNum RmqColM">
+          <Renderer.Component.TableCell {...col.cell("recv")}>
             {formatBytesRate(c.recvBytes.rate)}
           </Renderer.Component.TableCell>
-          <Renderer.Component.TableCell className="RmqNum RmqColM">
+          <Renderer.Component.TableCell {...col.cell("send")}>
             {formatBytesRate(c.sendBytes.rate)}
           </Renderer.Component.TableCell>
-          <Renderer.Component.TableCell className="RmqColL">
+          <Renderer.Component.TableCell {...col.cell("since")}>
             {formatTimestamp(c.connectedAt)}
           </Renderer.Component.TableCell>
         </Renderer.Component.TableRow>
@@ -121,7 +136,22 @@ function ConnectionsTable({ items }: { items: ConnectionDto[] }) {
   );
 }
 
+const RABBITMQ_CHANNELS_COLUMNS: ColumnSpec[] = [
+  { id: "name", width: 280, grow: true, minWidth: 140 },
+  { id: "user", width: 110 },
+  { id: "vhost", width: 80 },
+  { id: "state", width: 110 },
+  { id: "mode", width: 110 },
+  { id: "consumers", width: 100, numeric: true },
+  { id: "prefetch", width: 110, numeric: true },
+  { id: "unacked", width: 90, numeric: true },
+  { id: "unconfirmed", width: 110, numeric: true },
+  { id: "publish", width: 100, numeric: true },
+  { id: "deliver", width: 100, numeric: true },
+];
+
 function ChannelsTable({ items }: { items: ChannelDto[] }) {
+  const col = useResizableColumns("rabbitmq-channels", RABBITMQ_CHANNELS_COLUMNS);
   return (
     <Renderer.Component.Table<ChannelDto>
       tableId="rabbitmq-channels"
@@ -141,71 +171,71 @@ function ChannelsTable({ items }: { items: ChannelDto[] }) {
       }}
     >
       <Renderer.Component.TableHead sticky nowrap>
-        <Renderer.Component.TableCell className="RmqColGrow" sortBy="name">
+        <Renderer.Component.TableCell {...col.head("name")} sortBy="name">
           Channel
         </Renderer.Component.TableCell>
-        <Renderer.Component.TableCell className="RmqColM" sortBy="user">
+        <Renderer.Component.TableCell {...col.head("user")} sortBy="user">
           User
         </Renderer.Component.TableCell>
-        <Renderer.Component.TableCell className="RmqColXS">Vhost</Renderer.Component.TableCell>
-        <Renderer.Component.TableCell className="RmqColM" sortBy="state">
+        <Renderer.Component.TableCell {...col.head("vhost")}>Vhost</Renderer.Component.TableCell>
+        <Renderer.Component.TableCell {...col.head("state")} sortBy="state">
           State
         </Renderer.Component.TableCell>
-        <Renderer.Component.TableCell className="RmqColM">Mode</Renderer.Component.TableCell>
-        <Renderer.Component.TableCell sortBy="consumers" className="RmqNum RmqColS">
+        <Renderer.Component.TableCell {...col.head("mode")}>Mode</Renderer.Component.TableCell>
+        <Renderer.Component.TableCell {...col.head("consumers")} sortBy="consumers">
           Consumers
         </Renderer.Component.TableCell>
-        <Renderer.Component.TableCell sortBy="prefetch" className="RmqNum RmqColM">
+        <Renderer.Component.TableCell {...col.head("prefetch")} sortBy="prefetch">
           Prefetch
         </Renderer.Component.TableCell>
-        <Renderer.Component.TableCell sortBy="unacked" className="RmqNum RmqColS">
+        <Renderer.Component.TableCell {...col.head("unacked")} sortBy="unacked">
           Unacked
         </Renderer.Component.TableCell>
-        <Renderer.Component.TableCell className="RmqNum RmqColM">Unconfirmed</Renderer.Component.TableCell>
-        <Renderer.Component.TableCell sortBy="publish" className="RmqNum RmqColM">
+        <Renderer.Component.TableCell {...col.head("unconfirmed")}>Unconfirmed</Renderer.Component.TableCell>
+        <Renderer.Component.TableCell {...col.head("publish")} sortBy="publish">
           Publish
         </Renderer.Component.TableCell>
-        <Renderer.Component.TableCell sortBy="deliver" className="RmqNum RmqColM">
+        <Renderer.Component.TableCell {...col.head("deliver")} sortBy="deliver">
           Deliver
         </Renderer.Component.TableCell>
       </Renderer.Component.TableHead>
       {items.map((c) => (
         <Renderer.Component.TableRow key={c.name} sortItem={c} nowrap>
-          <Renderer.Component.TableCell className="RmqColGrow" title={c.name}>
+          <Renderer.Component.TableCell {...col.cell("name")} title={c.name}>
             <span className="RmqMono RmqEllipsis">{c.name}</span>
           </Renderer.Component.TableCell>
-          <Renderer.Component.TableCell className="RmqColM">{c.user}</Renderer.Component.TableCell>
-          <Renderer.Component.TableCell className="RmqColXS">
+          <Renderer.Component.TableCell {...col.cell("user")}>{c.user}</Renderer.Component.TableCell>
+          <Renderer.Component.TableCell {...col.cell("vhost")}>
             <span className="RmqMono">{c.vhost}</span>
           </Renderer.Component.TableCell>
-          <Renderer.Component.TableCell className="RmqColM">
+          <Renderer.Component.TableCell {...col.cell("state")}>
             <StatusDot state={c.state} />
           </Renderer.Component.TableCell>
-          <Renderer.Component.TableCell className="RmqColM">
+          <Renderer.Component.TableCell {...col.cell("mode")}>
             <span className="RmqBadges">
               {c.confirm ? <Renderer.Component.Badge small label="confirm" /> : null}
               {c.transactional ? <Renderer.Component.Badge small label="tx" /> : null}
             </span>
           </Renderer.Component.TableCell>
-          <Renderer.Component.TableCell className="RmqNum RmqColS">
+          <Renderer.Component.TableCell {...col.cell("consumers")}>
             {formatNumber(c.consumerCount)}
           </Renderer.Component.TableCell>
-          <Renderer.Component.TableCell className="RmqNum RmqColM" title={`global prefetch ${c.globalPrefetchCount}`}>
+          <Renderer.Component.TableCell {...col.cell("prefetch")} title={`global prefetch ${c.globalPrefetchCount}`}>
             {c.prefetchCount === 0 ? "∞" : formatNumber(c.prefetchCount)}
             {c.globalPrefetchCount > 0 ? (
               <span className="RmqMuted"> / {formatNumber(c.globalPrefetchCount)}</span>
             ) : null}
           </Renderer.Component.TableCell>
-          <Renderer.Component.TableCell className="RmqNum RmqColS">
+          <Renderer.Component.TableCell {...col.cell("unacked")}>
             {formatNumber(c.messagesUnacknowledged)}
           </Renderer.Component.TableCell>
-          <Renderer.Component.TableCell className="RmqNum RmqColM">
+          <Renderer.Component.TableCell {...col.cell("unconfirmed")}>
             {formatNumber(c.messagesUnconfirmed)}
           </Renderer.Component.TableCell>
-          <Renderer.Component.TableCell className="RmqNum RmqColM">
+          <Renderer.Component.TableCell {...col.cell("publish")}>
             {formatRate(c.publish.rate)}
           </Renderer.Component.TableCell>
-          <Renderer.Component.TableCell className="RmqNum RmqColM">
+          <Renderer.Component.TableCell {...col.cell("deliver")}>
             {formatRate(c.deliverGet.rate)}
           </Renderer.Component.TableCell>
         </Renderer.Component.TableRow>

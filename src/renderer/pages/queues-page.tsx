@@ -12,6 +12,7 @@ import {
   Toolbar,
   WriteModeToggle,
 } from "../components/page-shell";
+import { type ColumnSpec, useResizableColumns } from "../components/resizable-columns";
 import { formatBytes, formatNumber, formatRate, matchesQuery } from "../format";
 import { useDebounced, usePageParam, useResource } from "../hooks";
 import { RABBITMQ_PAGE_IDS } from "../navigation";
@@ -38,7 +39,23 @@ function decodeQueueRef(ref: string): { vhost: string; name: string } | undefine
   return { vhost: decodeURIComponent(ref.slice(0, at)), name: decodeURIComponent(ref.slice(at + 1)) };
 }
 
+const RABBITMQ_QUEUES_COLUMNS: ColumnSpec[] = [
+  { id: "name", width: 280, grow: true, minWidth: 140 },
+  { id: "vhost", width: 80 },
+  { id: "type", width: 100 },
+  { id: "state", width: 110 },
+  { id: "features", width: 170 },
+  { id: "ready", width: 90, numeric: true },
+  { id: "unacked", width: 90, numeric: true },
+  { id: "total", width: 90, numeric: true },
+  { id: "consumers", width: 100, numeric: true },
+  { id: "publish", width: 100, numeric: true },
+  { id: "deliver", width: 100, numeric: true },
+  { id: "memory", width: 100, numeric: true },
+];
+
 export function QueuesPage(props: QueuesPageProps) {
+  const col = useResizableColumns("rabbitmq-queues", RABBITMQ_QUEUES_COLUMNS);
   const page = useTargetPage(props, props.params?.target);
   const { target, selection } = page;
   const writeMode = useWriteMode(props.writeMode, target?.targetId);
@@ -156,38 +173,38 @@ export function QueuesPage(props: QueuesPageProps) {
             }}
           >
             <Renderer.Component.TableHead sticky nowrap>
-              <Renderer.Component.TableCell className="RmqColGrow" sortBy="name">
+              <Renderer.Component.TableCell {...col.head("name")} sortBy="name">
                 Name
               </Renderer.Component.TableCell>
-              <Renderer.Component.TableCell className="RmqColXS" sortBy="vhost">
+              <Renderer.Component.TableCell {...col.head("vhost")} sortBy="vhost">
                 Vhost
               </Renderer.Component.TableCell>
-              <Renderer.Component.TableCell className="RmqColM" sortBy="type">
+              <Renderer.Component.TableCell {...col.head("type")} sortBy="type">
                 Type
               </Renderer.Component.TableCell>
-              <Renderer.Component.TableCell className="RmqColM" sortBy="state">
+              <Renderer.Component.TableCell {...col.head("state")} sortBy="state">
                 State
               </Renderer.Component.TableCell>
-              <Renderer.Component.TableCell className="RmqColL">Features</Renderer.Component.TableCell>
-              <Renderer.Component.TableCell sortBy="ready" className="RmqNum RmqColS">
+              <Renderer.Component.TableCell {...col.head("features")}>Features</Renderer.Component.TableCell>
+              <Renderer.Component.TableCell {...col.head("ready")} sortBy="ready">
                 Ready
               </Renderer.Component.TableCell>
-              <Renderer.Component.TableCell sortBy="unacked" className="RmqNum RmqColS">
+              <Renderer.Component.TableCell {...col.head("unacked")} sortBy="unacked">
                 Unacked
               </Renderer.Component.TableCell>
-              <Renderer.Component.TableCell sortBy="total" className="RmqNum RmqColS">
+              <Renderer.Component.TableCell {...col.head("total")} sortBy="total">
                 Total
               </Renderer.Component.TableCell>
-              <Renderer.Component.TableCell sortBy="consumers" className="RmqNum RmqColM">
+              <Renderer.Component.TableCell {...col.head("consumers")} sortBy="consumers">
                 Consumers
               </Renderer.Component.TableCell>
-              <Renderer.Component.TableCell sortBy="publish" className="RmqNum RmqColM">
+              <Renderer.Component.TableCell {...col.head("publish")} sortBy="publish">
                 Publish
               </Renderer.Component.TableCell>
-              <Renderer.Component.TableCell sortBy="deliver" className="RmqNum RmqColM">
+              <Renderer.Component.TableCell {...col.head("deliver")} sortBy="deliver">
                 Deliver
               </Renderer.Component.TableCell>
-              <Renderer.Component.TableCell sortBy="memory" className="RmqNum RmqColM">
+              <Renderer.Component.TableCell {...col.head("memory")} sortBy="memory">
                 Memory
               </Renderer.Component.TableCell>
             </Renderer.Component.TableHead>
@@ -199,17 +216,17 @@ export function QueuesPage(props: QueuesPageProps) {
                 className="clickable"
                 onClick={() => openQueue(q)}
               >
-                <Renderer.Component.TableCell className="RmqColGrow" title={q.name}>
+                <Renderer.Component.TableCell {...col.cell("name")} title={q.name}>
                   <span className="RmqMono RmqEllipsis">{q.name}</span>
                 </Renderer.Component.TableCell>
-                <Renderer.Component.TableCell className="RmqColXS">
+                <Renderer.Component.TableCell {...col.cell("vhost")}>
                   <span className="RmqMono">{q.vhost}</span>
                 </Renderer.Component.TableCell>
-                <Renderer.Component.TableCell className="RmqColM">{q.type}</Renderer.Component.TableCell>
-                <Renderer.Component.TableCell className="RmqColM">
+                <Renderer.Component.TableCell {...col.cell("type")}>{q.type}</Renderer.Component.TableCell>
+                <Renderer.Component.TableCell {...col.cell("state")}>
                   <StatusDot state={q.state} />
                 </Renderer.Component.TableCell>
-                <Renderer.Component.TableCell className="RmqColL">
+                <Renderer.Component.TableCell {...col.cell("features")}>
                   <span className="RmqBadges">
                     {q.durable ? <Renderer.Component.Badge small label="D" tooltip="Durable" /> : null}
                     {q.autoDelete ? <Renderer.Component.Badge small label="AD" tooltip="Auto-delete" /> : null}
@@ -220,25 +237,25 @@ export function QueuesPage(props: QueuesPageProps) {
                     ) : null}
                   </span>
                 </Renderer.Component.TableCell>
-                <Renderer.Component.TableCell className="RmqNum RmqColS">
+                <Renderer.Component.TableCell {...col.cell("ready")}>
                   {formatNumber(q.ready)}
                 </Renderer.Component.TableCell>
-                <Renderer.Component.TableCell className="RmqNum RmqColS">
+                <Renderer.Component.TableCell {...col.cell("unacked")}>
                   {formatNumber(q.unacknowledged)}
                 </Renderer.Component.TableCell>
-                <Renderer.Component.TableCell className="RmqNum RmqColS">
+                <Renderer.Component.TableCell {...col.cell("total")}>
                   {formatNumber(q.messages)}
                 </Renderer.Component.TableCell>
-                <Renderer.Component.TableCell className="RmqNum RmqColM">
+                <Renderer.Component.TableCell {...col.cell("consumers")}>
                   {formatNumber(q.consumers)}
                 </Renderer.Component.TableCell>
-                <Renderer.Component.TableCell className="RmqNum RmqColM">
+                <Renderer.Component.TableCell {...col.cell("publish")}>
                   {formatRate(q.publish.rate)}
                 </Renderer.Component.TableCell>
-                <Renderer.Component.TableCell className="RmqNum RmqColM">
+                <Renderer.Component.TableCell {...col.cell("deliver")}>
                   {formatRate(q.deliverGet.rate)}
                 </Renderer.Component.TableCell>
-                <Renderer.Component.TableCell className="RmqNum RmqColM">
+                <Renderer.Component.TableCell {...col.cell("memory")}>
                   {formatBytes(q.memory)}
                 </Renderer.Component.TableCell>
               </Renderer.Component.TableRow>

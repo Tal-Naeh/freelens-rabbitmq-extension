@@ -505,37 +505,17 @@
   }
 }
 
-/* ---- Table column sizing: core `.TableCell{flex:1 0}` is content-sized, so pin every column. ---- */
+/* ---- Tables: widths come from useResizableColumns (inline styles); drag the header edge, double-click to reset. ---- */
 .RmqPage {
+  .RmqTableWrap {
+    overflow-x: auto;
+  }
   .TableCell {
     min-width: 0;
   }
   .TableCell > .RmqEllipsis {
     min-width: 0;
     flex: 1 1 auto;
-  }
-  .RmqColGrow {
-    flex: 1 1 220px;
-    min-width: 160px;
-  }
-  .RmqColGrowS {
-    flex: 1 1 160px;
-    min-width: 120px;
-  }
-  .RmqColXS {
-    flex: 0 0 80px;
-  }
-  .RmqColS {
-    flex: 0 0 95px;
-  }
-  .RmqColM {
-    flex: 0 0 115px;
-  }
-  .RmqColL {
-    flex: 0 0 165px;
-  }
-  .RmqColXL {
-    flex: 0 0 210px;
   }
   .TableCell.RmqNum {
     justify-content: flex-end;
@@ -545,6 +525,9 @@
   }
   .TableHead .TableCell {
     font-size: 12px;
+  }
+  .TableHead .TableCell .resize-handle {
+    width: 10px;
   }
   .TableRow .TableCell {
     font-size: 13px;
