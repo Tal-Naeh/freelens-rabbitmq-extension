@@ -68,7 +68,6 @@ jobs:
 
       - name: Publish npm packages
         id: publish-npm
-        if: ${{ env.NPM_TOKEN != '' }}
         run: |
           case "${GITHUB_REF_NAME}" in
             *-*) dist_tag=next;;
@@ -89,7 +88,7 @@ jobs:
 
       - name: Publish npm packages (retry)
         id: publish-npm-2
-        if: ${{ env.NPM_TOKEN != '' && steps.publish-npm.outcome == 'failure' }}
+        if: steps.publish-npm.outcome == 'failure'
         run: |
           case "${GITHUB_REF_NAME}" in
             *-*) dist_tag=next;;
@@ -109,7 +108,7 @@ jobs:
         continue-on-error: true
 
       - name: Publish npm packages (retry 2)
-        if: ${{ env.NPM_TOKEN != '' && steps.publish-npm-2.outcome == 'failure' }}
+        if: steps.publish-npm-2.outcome == 'failure'
         run: |
           case "${GITHUB_REF_NAME}" in
             *-*) dist_tag=next;;
