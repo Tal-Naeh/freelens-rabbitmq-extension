@@ -61,8 +61,8 @@ export function QueuesPage(props: QueuesPageProps) {
   const writeMode = useWriteMode(props.writeMode, target?.targetId);
   const [query, setQuery] = usePageParam(props.params?.query);
   const [vhost, setVhost] = usePageParam(props.params?.vhost);
-  const [queueRef, setQueueRef] = useSelectionParam(props.params?.queue);
-  const [view, setView] = useSelectionParam(props.params?.view);
+  const [queueRef, setQueueRef] = useSelectionParam("queues.queue", props.params?.queue);
+  const [view, setView] = useSelectionParam("queues.view", props.params?.view);
   const debouncedQuery = useDebounced(query);
 
   const queues = useResource(

@@ -51,7 +51,7 @@ export function ExchangesPage(props: ExchangesPageProps) {
   const writeMode = useWriteMode(props.writeMode, target?.targetId);
   const [query, setQuery] = usePageParam(props.params?.query);
   const [vhost, setVhost] = usePageParam(props.params?.vhost);
-  const [exchangeRef, setExchangeRef] = useSelectionParam(props.params?.exchange);
+  const [exchangeRef, setExchangeRef] = useSelectionParam("exchanges.exchange", props.params?.exchange);
   const debouncedQuery = useDebounced(query);
 
   const exchanges = useResource(

@@ -249,7 +249,7 @@ export function ConnectionsPage(props: ConnectionsPageProps) {
   const { target, selection } = page;
   const writeMode = useWriteMode(props.writeMode, target?.targetId);
   const [query, setQuery] = usePageParam(props.params?.query);
-  const [rawView, setView] = useSelectionParam(props.params?.view);
+  const [rawView, setView] = useSelectionParam("connections.view", props.params?.view);
   const view = (VIEWS.some((v) => v.value === rawView) ? rawView : "connections") as View;
   const debouncedQuery = useDebounced(query);
   const scope = target ? `${page.clusterKey}:${target.targetId}` : undefined;

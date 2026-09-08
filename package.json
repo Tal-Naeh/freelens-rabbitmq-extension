@@ -1,6 +1,6 @@
 {
   "name": "@freelensapp/rabbitmq-extension",
-  "version": "0.1.6",
+  "version": "0.1.7",
   "description": "Freelens extension for RabbitMQ — cluster-native queue, exchange, connection and message inspection",
   "repository": {
     "type": "git",
@@ -64,7 +64,9 @@
     "@vitejs/plugin-react": "^6.0.1",
     "electron-vite": "^5.0.0",
     "encoding": "^0.1.13",
+    "jsdom": "^26.1.0",
     "react": "17.0.2",
+    "react-dom": "17.0.2",
     "sass": "^1.99.0",
     "tsx": "^4.19.2",
     "typescript": "5.9.3",

@@ -75,31 +75,78 @@ export function usePageParam(param: Renderer.Navigation.PageParam<string> | unde
 }
 
 /**
- * URL-backed selection whose current value is OWNED BY REACT STATE. Use it for anything that must
- * survive background refreshes (an open drawer, the active tab): the URL is written for deep links
- * and read on mount or when it changes to a non-empty value, but a URL param going missing during a
- * re-render can never close the drawer.
+ * Renderer-session store for UI selections (open drawer, active tab). Lives outside React so it
+ * survives page re-mounts caused by route/URL changes, and outside the URL so a page param going
+ * missing can never close a drawer.
+ */
+export class SelectionStore {
+  private readonly values = new Map<string, string>();
+  private readonly listeners = new Map<string, Set<(value: string) => void>>();
+
+  get(key: string): string {
+    return this.values.get(key) ?? "";
+  }
+
+  set(key: string, value: string): void {
+    if (this.get(key) === value) return;
+    if (value) this.values.set(key, value);
+    else this.values.delete(key);
+    for (const listener of this.listeners.get(key) ?? []) listener(value);
+  }
+
+  subscribe(key: string, listener: (value: string) => void): () => void {
+    let set = this.listeners.get(key);
+    if (!set) {
+      set = new Set();
+      this.listeners.set(key, set);
+    }
+    set.add(listener);
+    return () => {
+      set?.delete(listener);
+    };
+  }
+}
+
+export const selectionStore = new SelectionStore();
+
+/**
+ * A selection (open drawer, active tab) backed by {@link selectionStore}. The URL page param is
+ * only READ, as a deep link: at mount, and whenever it changes to a new non-empty value (e.g. the
+ * Exchanges page navigating to a queue). Opening never writes the URL — doing so re-renders the
+ * route and can re-mount the page. Closing clears the URL param so a stale deep link is not re-applied.
  */
 export function useSelectionParam(
+  key: string,
   param: Renderer.Navigation.PageParam<string> | undefined,
+  store: SelectionStore = selectionStore,
 ): [string, (v: string) => void] {
   const urlNow = param?.get() ?? "";
-  const [value, setValue] = useState(urlNow);
+  const [value, setValue] = useState(() => urlNow || store.get(key));
   const lastUrl = useRef(urlNow);
+
+  useEffect(() => {
+    if (urlNow) store.set(key, urlNow);
+    return store.subscribe(key, setValue);
+  }, [store, key]);
+
   useEffect(() => {
     if (urlNow === lastUrl.current) return;
     lastUrl.current = urlNow;
-    if (urlNow) setValue(urlNow);
-  }, [urlNow]);
+    if (urlNow) store.set(key, urlNow);
+  }, [store, key, urlNow]);
+
   const set = useCallback(
     (next: string) => {
-      lastUrl.current = next;
-      setValue(next);
-      param?.set(next, { replaceHistory: true });
+      store.set(key, next);
+      if (!next && param && param.get()) {
+        lastUrl.current = "";
+        param.set("", { replaceHistory: true });
+      }
     },
-    [param],
+    [store, key, param],
   );
-  return [value, set];
+
+  return [store.get(key) || value, set];
 }
 
 /** Debounce a fast-changing value (search boxes). */

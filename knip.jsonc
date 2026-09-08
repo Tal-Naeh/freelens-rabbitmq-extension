@@ -10,7 +10,9 @@
     "@vitejs/plugin-react",
     "vite-plugin-sass-dts",
     // optional peer of node-fetch (via @kubernetes/client-node), resolved & bundled at build time
-    "encoding"
+    "encoding",
+    // vitest environment selected via the `// @vitest-environment jsdom` pragma in hook tests
+    "jsdom"
   ],
 
   "typescript": {

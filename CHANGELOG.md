@@ -1,12 +1,12 @@
 # Changelog
 
-## 0.1.6 (unreleased)
+## 0.1.7 (unreleased)
 
 Initial implementation.
 
 - Fix: Cluster/vhost dropdown menus no longer render behind the sticky table header (portal z-index).
 
-- Fix: queue/exchange detail drawers and the Connections tabs keep their state across background refreshes (React-owned selection state; URL used only for deep links).
+- Fix: queue/exchange detail drawers and the Connections tabs keep their state across background refreshes and page re-mounts (renderer-session SelectionStore; URL read only as a deep link, never written on open).
 
 - Resizable table columns: drag a header cell's right edge, double-click it to reset; widths persist per table.
 
