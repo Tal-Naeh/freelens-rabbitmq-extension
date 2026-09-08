@@ -4,7 +4,7 @@ import { parseIpcError } from "../../common/errors";
 import { ConnectionErrorPanel } from "../components/connection-error";
 import { ArgumentsView, KeyValueList, LoadingState } from "../components/page-shell";
 import { formatRate } from "../format";
-import { useResource } from "../hooks";
+import { useDeferredOpen, useResource } from "../hooks";
 import { BindingsTable } from "./bindings-table";
 
 import type { ExchangeDetailDto } from "../../common/ipc";
@@ -192,6 +192,7 @@ export function ExchangeDetailDrawer({
   const detail = useResource(key, () =>
     deps.client.exchangeDetail(page.request({ vhost: exchange!.vhost, exchange: exchange!.name })),
   );
+  const isOpen = useDeferredOpen(Boolean(exchange));
 
   const remove = () => {
     if (!exchange) return;
@@ -225,7 +226,7 @@ export function ExchangeDetailDrawer({
 
   return (
     <Renderer.Component.Drawer
-      open={Boolean(exchange)}
+      open={isOpen}
       title={exchange ? `Exchange ${exchange.name || "(default)"}` : ""}
       onClose={onClose}
       usePortal

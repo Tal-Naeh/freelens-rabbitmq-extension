@@ -1,8 +1,10 @@
 # Changelog
 
-## 0.1.7 (unreleased)
+## 0.1.8 (unreleased)
 
 Initial implementation.
+
+- Fix: detail drawers open reliably — the core Drawer treated the opening click itself as an outside click; drawers now open one tick later and opening clicks are marked handled.
 
 - Fix: Cluster/vhost dropdown menus no longer render behind the sticky table header (portal z-index).
 

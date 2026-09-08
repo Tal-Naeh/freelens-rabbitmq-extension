@@ -214,7 +214,11 @@ export function QueuesPage(props: QueuesPageProps) {
                 sortItem={q}
                 nowrap
                 className="clickable"
-                onClick={() => openQueue(q)}
+                onClick={(event) => {
+                  // Mark the click handled so the Drawer's window listener does not treat it as "outside".
+                  event.preventDefault();
+                  openQueue(q);
+                }}
               >
                 <Renderer.Component.TableCell {...col.cell("name")} title={q.name}>
                   <span className="RmqMono RmqEllipsis">{q.name}</span>

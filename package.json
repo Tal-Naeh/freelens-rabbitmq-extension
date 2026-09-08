@@ -1,6 +1,6 @@
 {
   "name": "@freelensapp/rabbitmq-extension",
-  "version": "0.1.7",
+  "version": "0.1.8",
   "description": "Freelens extension for RabbitMQ — cluster-native queue, exchange, connection and message inspection",
   "repository": {
     "type": "git",

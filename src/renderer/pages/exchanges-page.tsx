@@ -171,7 +171,10 @@ export function ExchangesPage(props: ExchangesPageProps) {
                 sortItem={x}
                 nowrap
                 className="clickable"
-                onClick={() => openExchange(x.vhost, x.name)}
+                onClick={(event) => {
+                  event.preventDefault();
+                  openExchange(x.vhost, x.name);
+                }}
               >
                 <Renderer.Component.TableCell {...col.cell("name")} title={x.name}>
                   <span className="RmqMono RmqEllipsis">

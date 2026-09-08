@@ -4,7 +4,7 @@ import { parseIpcError } from "../../common/errors";
 import { ConnectionErrorPanel } from "../components/connection-error";
 import { ArgumentsView, KeyValueList, LoadingState, StatusDot } from "../components/page-shell";
 import { formatBytes, formatNumber, formatRate, shortNodeName } from "../format";
-import { useResource } from "../hooks";
+import { useDeferredOpen, useResource } from "../hooks";
 import { BindingsTable } from "./bindings-table";
 import { ConsumersTable } from "./consumers-table";
 import { MessageInspector } from "./message-inspector";
@@ -101,6 +101,7 @@ export function QueueDetailDrawer({
   const detail = useResource(key, () =>
     deps.client.queueDetail(page.request({ vhost: queue!.vhost, queue: queue!.name })),
   );
+  const isOpen = useDeferredOpen(Boolean(queue));
   const [busy, setBusy] = useState(false);
 
   const guarded = (label: string, message: string, action: () => Promise<unknown>, afterClose = false) => {
@@ -148,7 +149,7 @@ export function QueueDetailDrawer({
 
   return (
     <Renderer.Component.Drawer
-      open={Boolean(queue)}
+      open={isOpen}
       title={queue ? `Queue ${queue.name}` : ""}
       onClose={onClose}
       usePortal

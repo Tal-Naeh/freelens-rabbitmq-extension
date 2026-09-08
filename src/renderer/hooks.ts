@@ -149,6 +149,24 @@ export function useSelectionParam(
   return [store.get(key) || value, set];
 }
 
+/**
+ * Open a Freelens `Drawer` one tick AFTER the state that opens it. The core Drawer closes on any
+ * `window` click outside itself; if it mounts open synchronously inside the click handler that
+ * opened it, that same click reaches `window` and closes it again. Closing is immediate.
+ */
+export function useDeferredOpen(open: boolean): boolean {
+  const [deferred, setDeferred] = useState(false);
+  useEffect(() => {
+    if (!open) {
+      setDeferred(false);
+      return;
+    }
+    const timer = setTimeout(() => setDeferred(true), 0);
+    return () => clearTimeout(timer);
+  }, [open]);
+  return open && deferred;
+}
+
 /** Debounce a fast-changing value (search boxes). */
 export function useDebounced<T>(value: T, delayMs = 200): T {
   const [debounced, setDebounced] = useState(value);

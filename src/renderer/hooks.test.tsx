@@ -2,8 +2,8 @@
 
 import { render, unmountComponentAtNode } from "react-dom";
 import { act } from "react-dom/test-utils";
-import { afterEach, beforeEach, describe, expect, it } from "vitest";
-import { SelectionStore, useSelectionParam } from "./hooks";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { SelectionStore, useDeferredOpen, useSelectionParam } from "./hooks";
 
 import type { Renderer } from "@freelensapp/extensions";
 
@@ -103,5 +103,30 @@ describe("useSelectionParam", () => {
     expect(container.textContent).toBe("open:%2F/x");
     act(() => render(<Probe param={param} tick={1} store={store} />, container));
     expect(container.textContent).toBe("open:%2F/x");
+  });
+});
+
+function OpenProbe({ open }: { open: boolean }) {
+  return <div>{useDeferredOpen(open) ? "open" : "closed"}</div>;
+}
+
+describe("useDeferredOpen", () => {
+  it("opens one tick after the flag flips, closes immediately", () => {
+    vi.useFakeTimers();
+    try {
+      act(() => render(<OpenProbe open={false} />, container));
+      expect(container.textContent).toBe("closed");
+      act(() => render(<OpenProbe open={true} />, container));
+      // Still closed within the same tick: the opening click can bubble to window harmlessly.
+      expect(container.textContent).toBe("closed");
+      act(() => {
+        vi.runAllTimers();
+      });
+      expect(container.textContent).toBe("open");
+      act(() => render(<OpenProbe open={false} />, container));
+      expect(container.textContent).toBe("closed");
+    } finally {
+      vi.useRealTimers();
+    }
   });
 });
