@@ -580,3 +580,12 @@
     font-size: 13px;
   }
 }
+
+/* Select menus are portaled to <body> with an inline z-index of 1 (react-select), which ties with the
+   sticky table header (z-index 1) and loses on paint order. Lift them above every page element. */
+.Select__menu-portal {
+  z-index: 1200 !important;
+}
+.Select__menu {
+  z-index: 1200 !important;
+}
