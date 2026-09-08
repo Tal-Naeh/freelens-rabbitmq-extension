@@ -510,21 +510,63 @@
   .RmqTableWrap {
     overflow-x: auto;
   }
+  .Table {
+    border: 1px solid var(--rmq-border);
+    border-radius: 8px;
+  }
+
+  /* Header and rows must share identical horizontal padding or columns drift. Core pads rows 0 8px, header 0. */
+  .TableHead,
+  .TableRow {
+    padding: 0 8px;
+  }
+  .TableRow {
+    border-bottom: 1px solid var(--rmq-border);
+  }
+  .TableRow:last-child {
+    border-bottom: none;
+  }
+  .TableRow:hover {
+    background: rgba(127, 127, 127, 0.08);
+  }
+
+  /* Every cell: same padding, vertical divider between columns. */
   .TableCell {
     min-width: 0;
+    padding: 8px 10px;
+  }
+  .TableCell + .TableCell {
+    border-left: 1px solid var(--rmq-border);
+  }
+  .TableHead .TableCell + .TableCell {
+    border-left-color: var(--rmq-border);
   }
   .TableCell > .RmqEllipsis {
     min-width: 0;
     flex: 1 1 auto;
   }
+  .TableCell > .content {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  /* Numeric columns: right-align header text AND values with the same right padding; sort icon moves left. */
   .TableCell.RmqNum {
     justify-content: flex-end;
+    font-variant-numeric: tabular-nums;
   }
-  .TableHead .TableCell.RmqNum {
-    padding-right: 28px;
+  .TableHead .TableCell.RmqNum .sortIcon {
+    right: auto;
+    left: 6px;
   }
+  .TableHead .TableCell.RmqNum .resize-handle {
+    right: 0;
+  }
+
   .TableHead .TableCell {
     font-size: 12px;
+    font-weight: 600;
   }
   .TableHead .TableCell .resize-handle {
     width: 10px;
