@@ -1,0 +1,13 @@
+# Changelog
+
+## 0.1.0 (unreleased)
+
+Initial implementation.
+
+- Discovery of `RabbitmqCluster` CRs and Management-API Services (operator, Bitnami, generic).
+- Credential resolution from operator default-user Secrets and workload env Secret refs; manual override.
+- SPDY port-forward to a Ready broker pod + core-Node HTTP client for the Management API.
+- Pages: Clusters, Overview (totals, rates, nodes), Queues (+ detail drawer, bindings, consumers, Message
+  Inspector with `ack_requeue_true`), Exchanges (+ bindings, publish), Connections/Channels/Consumers.
+- Session-scoped, confirmed Write Mode gating publish / purge / delete; enforced in Main.
+- Unit tests for the engine and UI helpers; Docker e2e harness verified against RabbitMQ 4.3.5.

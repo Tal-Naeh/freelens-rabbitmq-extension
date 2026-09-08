@@ -1,0 +1,506 @@
+.RmqPage {
+  --rmq-border: var(--borderColor, rgba(127, 127, 127, 0.22));
+  --rmq-muted: var(--textColorSecondary, rgba(127, 127, 127, 0.92));
+  --rmq-panel: var(--contentColor, rgba(127, 127, 127, 0.06));
+  --rmq-ok: var(--colorOk, #3dbd6b);
+  --rmq-warn: var(--colorWarning, #e0a800);
+  --rmq-err: var(--colorError, #e5484d);
+  --rmq-accent: var(--primary, #ff6600);
+
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  height: 100%;
+  min-width: 0;
+  padding: 18px 24px;
+  color: var(--textColorPrimary);
+  overflow: auto;
+
+  * {
+    box-sizing: border-box;
+  }
+
+  h1 {
+    margin: 0;
+    font-size: 22px;
+    font-weight: 600;
+    line-height: 1.2;
+  }
+  h2 {
+    margin: 0;
+    font-size: 15px;
+    font-weight: 600;
+  }
+  h3 {
+    margin: 0;
+    font-size: 13px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--rmq-muted);
+  }
+  code {
+    font-family: var(--font-monospace, ui-monospace, SFMono-Regular, Menlo, monospace);
+    font-size: 12px;
+  }
+
+  .RmqMuted {
+    color: var(--rmq-muted);
+  }
+  .RmqMono {
+    font-family: var(--font-monospace, ui-monospace, SFMono-Regular, Menlo, monospace);
+    font-size: 12px;
+  }
+  .RmqEllipsis {
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .RmqNum {
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+  }
+  .RmqLink {
+    color: var(--rmq-accent);
+    cursor: pointer;
+    text-decoration: none;
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}
+
+.RmqHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  min-height: 44px;
+  flex-wrap: wrap;
+  .RmqHeaderText > span {
+    display: block;
+    margin-top: 3px;
+    color: var(--rmq-muted);
+    font-size: 12px;
+  }
+  .RmqHeaderActions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+}
+
+.RmqTargetSelector {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  color: var(--rmq-muted);
+  .Select {
+    min-width: 260px;
+  }
+}
+
+.RmqWriteMode {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  border: 1px solid var(--rmq-border);
+  font-size: 12px;
+  color: var(--rmq-muted);
+  &.armed {
+    border-color: var(--rmq-warn);
+    color: var(--rmq-warn);
+    background: rgba(224, 168, 0, 0.08);
+  }
+}
+
+.RmqMetrics {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+  gap: 10px;
+  .RmqMetric {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    padding: 10px 12px;
+    border-radius: 8px;
+    background: var(--rmq-panel);
+    border: 1px solid var(--rmq-border);
+    strong {
+      font-size: 20px;
+      font-weight: 600;
+      font-variant-numeric: tabular-nums;
+    }
+    span {
+      font-size: 11px;
+      color: var(--rmq-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+    &.warning strong {
+      color: var(--rmq-warn);
+    }
+    &.error strong {
+      color: var(--rmq-err);
+    }
+    &.ok strong {
+      color: var(--rmq-ok);
+    }
+  }
+}
+
+.RmqToolbar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  .RmqSearch {
+    min-width: 260px;
+    flex: 1 1 260px;
+    max-width: 480px;
+  }
+  .Select {
+    min-width: 160px;
+  }
+  .RmqToolbarRight {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--rmq-muted);
+    font-size: 12px;
+  }
+}
+
+.RmqPanel {
+  border: 1px solid var(--rmq-border);
+  border-radius: 8px;
+  background: var(--rmq-panel);
+  padding: 12px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-width: 0;
+}
+
+.RmqGrid2 {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+  gap: 12px;
+}
+
+.RmqTableWrap {
+  flex: 1 1 auto;
+  min-height: 240px;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  .Table {
+    flex: 1;
+  }
+  .TableRow.clickable {
+    cursor: pointer;
+  }
+}
+
+.RmqState {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  i {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--rmq-muted);
+    display: inline-block;
+  }
+  &.ok i {
+    background: var(--rmq-ok);
+  }
+  &.warning i {
+    background: var(--rmq-warn);
+  }
+  &.error i {
+    background: var(--rmq-err);
+  }
+}
+
+.RmqBadges {
+  display: inline-flex;
+  gap: 4px;
+  flex-wrap: wrap;
+}
+
+.RmqKv {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  gap: 6px 16px;
+  margin: 0;
+  > div {
+    display: contents;
+  }
+  dt {
+    color: var(--rmq-muted);
+    font-size: 12px;
+    white-space: nowrap;
+  }
+  dd {
+    margin: 0;
+    font-size: 12px;
+    min-width: 0;
+    overflow-wrap: anywhere;
+  }
+}
+
+.RmqArgs {
+  margin: 0;
+  padding-left: 16px;
+  font-size: 12px;
+  li {
+    margin: 2px 0;
+  }
+}
+
+.RmqError {
+  border: 1px solid var(--rmq-err);
+  border-radius: 8px;
+  padding: 12px 14px;
+  background: rgba(229, 72, 77, 0.06);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  .RmqErrorHead {
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+    .Icon {
+      color: var(--rmq-err);
+    }
+    > div {
+      flex: 1;
+    }
+    p {
+      margin: 4px 0 0;
+      font-size: 12px;
+    }
+  }
+  .RmqErrorHint {
+    color: var(--rmq-muted);
+  }
+  &.write-mode-disabled {
+    border-color: var(--rmq-warn);
+    background: rgba(224, 168, 0, 0.06);
+    .Icon {
+      color: var(--rmq-warn);
+    }
+  }
+}
+
+.RmqCredentials {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  p {
+    margin: 0;
+    font-size: 12px;
+  }
+  .RmqCredentialsRow {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    align-items: center;
+    .Input {
+      min-width: 180px;
+    }
+  }
+}
+
+.RmqEmpty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 48px 16px;
+  color: var(--rmq-muted);
+  text-align: center;
+  strong {
+    color: var(--textColorPrimary);
+    font-size: 15px;
+  }
+  .Icon {
+    opacity: 0.5;
+  }
+}
+
+.RmqLoading {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 24px;
+  color: var(--rmq-muted);
+}
+
+.RmqProgress {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 12px;
+  color: var(--rmq-muted);
+  .LineProgress {
+    height: 4px;
+  }
+}
+
+.RmqDrawerBody {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 4px 0 16px;
+}
+.RmqDrawerToolbar {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.RmqTabs {
+  border-bottom: 1px solid var(--rmq-border);
+}
+
+.RmqMessages {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.RmqMessage {
+  border: 1px solid var(--rmq-border);
+  border-radius: 8px;
+  overflow: hidden;
+  .RmqMessageHead {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 12px;
+    background: var(--rmq-panel);
+    cursor: pointer;
+    font-size: 12px;
+    flex-wrap: wrap;
+    .RmqMessageIdx {
+      font-weight: 600;
+    }
+    .RmqMessageMeta {
+      color: var(--rmq-muted);
+    }
+    .RmqMessageSpacer {
+      flex: 1;
+    }
+  }
+  .RmqMessageBody {
+    padding: 10px 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  pre {
+    margin: 0;
+    padding: 10px;
+    border-radius: 6px;
+    background: rgba(0, 0, 0, 0.18);
+    max-height: 360px;
+    overflow: auto;
+    font-family: var(--font-monospace, ui-monospace, SFMono-Regular, Menlo, monospace);
+    font-size: 12px;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+  }
+}
+
+.RmqNotice {
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+  padding: 8px 12px;
+  border-radius: 8px;
+  font-size: 12px;
+  background: rgba(61, 189, 107, 0.08);
+  border: 1px solid var(--rmq-ok);
+  &.warning {
+    background: rgba(224, 168, 0, 0.08);
+    border-color: var(--rmq-warn);
+  }
+  p {
+    margin: 0;
+  }
+}
+
+.RmqForm {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  .Input {
+    width: 100%;
+  }
+  .RmqFormRow {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    > * {
+      flex: 1 1 180px;
+    }
+  }
+}
+
+.RmqConfirm p {
+  margin: 6px 0;
+}
+
+.RmqClusterCard {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 8px 16px;
+  align-items: center;
+  .RmqClusterTitle {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 15px;
+    font-weight: 600;
+  }
+  .RmqClusterFacts {
+    display: flex;
+    gap: 14px;
+    flex-wrap: wrap;
+    color: var(--rmq-muted);
+    font-size: 12px;
+    grid-column: 1 / -1;
+  }
+}
+
+.RmqBar {
+  position: relative;
+  height: 6px;
+  border-radius: 3px;
+  background: rgba(127, 127, 127, 0.18);
+  min-width: 80px;
+  overflow: hidden;
+  > i {
+    position: absolute;
+    inset: 0 auto 0 0;
+    background: var(--rmq-ok);
+    border-radius: 3px;
+  }
+  &.warning > i {
+    background: var(--rmq-warn);
+  }
+  &.error > i {
+    background: var(--rmq-err);
+  }
+}
