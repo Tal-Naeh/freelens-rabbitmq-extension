@@ -220,8 +220,10 @@ export function QueuesPage(props: QueuesPageProps) {
                   openQueue(q);
                 }}
               >
-                <Renderer.Component.TableCell {...col.cell("name")} title={q.name}>
-                  <span className="RmqMono RmqEllipsis">{q.name}</span>
+                <Renderer.Component.TableCell {...col.cell("name")}>
+                  <span className="RmqMono RmqEllipsis" title={q.name}>
+                    {q.name}
+                  </span>
                 </Renderer.Component.TableCell>
                 <Renderer.Component.TableCell {...col.cell("vhost")}>
                   <span className="RmqMono">{q.vhost}</span>

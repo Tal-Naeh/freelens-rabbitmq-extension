@@ -99,12 +99,12 @@ function ConnectionsTable({ items }: { items: ConnectionDto[] }) {
       </Renderer.Component.TableHead>
       {items.map((c) => (
         <Renderer.Component.TableRow key={c.name} sortItem={c} nowrap>
-          <Renderer.Component.TableCell {...col.cell("name")} title={c.name}>
+          <Renderer.Component.TableCell {...col.cell("name")}>
             <span className="RmqMono RmqEllipsis">{c.clientProperties.connectionName ?? c.name}</span>
             {c.clientProperties.connectionName ? <span className="RmqMuted RmqEllipsis RmqMono">{c.name}</span> : null}
             {c.node ? <span className="RmqMuted"> {shortNodeName(c.node)}</span> : null}
           </Renderer.Component.TableCell>
-          <Renderer.Component.TableCell {...col.cell("client")} title={c.clientProperties.platform}>
+          <Renderer.Component.TableCell {...col.cell("client")}>
             {[c.clientProperties.product, c.clientProperties.version].filter(Boolean).join(" ") || "—"}
           </Renderer.Component.TableCell>
           <Renderer.Component.TableCell {...col.cell("user")}>{c.user}</Renderer.Component.TableCell>
@@ -201,8 +201,10 @@ function ChannelsTable({ items }: { items: ChannelDto[] }) {
       </Renderer.Component.TableHead>
       {items.map((c) => (
         <Renderer.Component.TableRow key={c.name} sortItem={c} nowrap>
-          <Renderer.Component.TableCell {...col.cell("name")} title={c.name}>
-            <span className="RmqMono RmqEllipsis">{c.name}</span>
+          <Renderer.Component.TableCell {...col.cell("name")}>
+            <span className="RmqMono RmqEllipsis" title={c.name}>
+              {c.name}
+            </span>
           </Renderer.Component.TableCell>
           <Renderer.Component.TableCell {...col.cell("user")}>{c.user}</Renderer.Component.TableCell>
           <Renderer.Component.TableCell {...col.cell("vhost")}>
@@ -220,7 +222,7 @@ function ChannelsTable({ items }: { items: ChannelDto[] }) {
           <Renderer.Component.TableCell {...col.cell("consumers")}>
             {formatNumber(c.consumerCount)}
           </Renderer.Component.TableCell>
-          <Renderer.Component.TableCell {...col.cell("prefetch")} title={`global prefetch ${c.globalPrefetchCount}`}>
+          <Renderer.Component.TableCell {...col.cell("prefetch")}>
             {c.prefetchCount === 0 ? "∞" : formatNumber(c.prefetchCount)}
             {c.globalPrefetchCount > 0 ? (
               <span className="RmqMuted"> / {formatNumber(c.globalPrefetchCount)}</span>

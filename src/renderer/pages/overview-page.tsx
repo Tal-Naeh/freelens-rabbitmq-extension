@@ -76,7 +76,7 @@ function NodesTable({ nodes }: { nodes: NodeDto[] }) {
         const diskLow = n.diskFree !== undefined && n.diskFreeLimit !== undefined && n.diskFree < n.diskFreeLimit * 2;
         return (
           <Renderer.Component.TableRow key={n.name} sortItem={n} nowrap>
-            <Renderer.Component.TableCell {...col.cell("name")} title={n.name}>
+            <Renderer.Component.TableCell {...col.cell("name")}>
               <span className="RmqMono">{shortNodeName(n.name)}</span>
               {n.partitions.length > 0 ? (
                 <Renderer.Component.Badge small label="PARTITIONED" className="error" />
@@ -90,16 +90,13 @@ function NodesTable({ nodes }: { nodes: NodeDto[] }) {
             <Renderer.Component.TableCell {...col.cell("uptime")}>
               {formatDuration(n.uptimeMs)}
             </Renderer.Component.TableCell>
-            <Renderer.Component.TableCell
-              {...col.cell("memory")}
-              title={`${formatBytes(n.memUsed)} of ${formatBytes(n.memLimit)} high-watermark`}
-            >
+            <Renderer.Component.TableCell {...col.cell("memory")}>
               <div>
                 {formatBytes(n.memUsed)} / {formatBytes(n.memLimit)}
               </div>
               <Bar used={n.memUsed} total={n.memLimit} alarm={n.memAlarm} />
             </Renderer.Component.TableCell>
-            <Renderer.Component.TableCell {...col.cell("disk")} title={`limit ${formatBytes(n.diskFreeLimit)}`}>
+            <Renderer.Component.TableCell {...col.cell("disk")}>
               <span className={diskLow || n.diskFreeAlarm ? "RmqState error" : ""}>{formatBytes(n.diskFree)}</span>
             </Renderer.Component.TableCell>
             <Renderer.Component.TableCell {...col.cell("fds")}>

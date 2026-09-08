@@ -176,7 +176,7 @@ export function ExchangesPage(props: ExchangesPageProps) {
                   openExchange(x.vhost, x.name);
                 }}
               >
-                <Renderer.Component.TableCell {...col.cell("name")} title={x.name}>
+                <Renderer.Component.TableCell {...col.cell("name")}>
                   <span className="RmqMono RmqEllipsis">
                     {x.name || <span className="RmqMuted">(AMQP default)</span>}
                   </span>

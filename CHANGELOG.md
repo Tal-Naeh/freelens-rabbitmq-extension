@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.2.1
+
+- Fix: table cells that carried a tooltip `title` rendered the tooltip text instead of the value (Memory, Disk free, Client, Prefetch columns).
+- Restore the full freelensapp workflow set (trunk, Renovate, osv-scanner, npm audit/dedupe) and add CONTRIBUTING.
+
 ## 0.2.0
 
 First published release, as `@tal-naeh/freelens-rabbitmq-extension` on npm.

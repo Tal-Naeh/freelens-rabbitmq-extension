@@ -12,6 +12,10 @@ by default**.
 Modelled on the [freelens-kafka-extension](https://github.com/freelensapp/freelens-kafka-extension)
 architecture, tailored for RabbitMQ.
 
+![Queues](docs/screenshots/queues.png)
+
+![Overview](docs/screenshots/overview.png)
+
 ## Features
 
 - **Autodiscovery** — `RabbitmqCluster` resources (RabbitMQ Cluster Operator) and plain `Service`s

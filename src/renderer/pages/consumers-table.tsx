@@ -75,10 +75,12 @@ export function ConsumersTable({
               {c.vhost !== "/" ? <span className="RmqMuted"> @ {c.vhost}</span> : null}
             </Renderer.Component.TableCell>
           ) : null}
-          <Renderer.Component.TableCell {...col.cell("tag")} title={c.consumerTag}>
-            <span className="RmqMono RmqEllipsis">{c.consumerTag}</span>
+          <Renderer.Component.TableCell {...col.cell("tag")}>
+            <span className="RmqMono RmqEllipsis" title={c.consumerTag}>
+              {c.consumerTag}
+            </span>
           </Renderer.Component.TableCell>
-          <Renderer.Component.TableCell {...col.cell("channel")} title={c.channelName}>
+          <Renderer.Component.TableCell {...col.cell("channel")}>
             <span className="RmqMono RmqEllipsis">{c.channelName ?? "—"}</span>
           </Renderer.Component.TableCell>
           <Renderer.Component.TableCell {...col.cell("peer")}>
