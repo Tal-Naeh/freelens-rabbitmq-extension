@@ -1,8 +1,8 @@
 # Changelog
 
-## 0.1.8 (unreleased)
+## 0.2.0
 
-Initial implementation.
+First published release, as `@tal-naeh/freelens-rabbitmq-extension` on npm.
 
 - Fix: detail drawers open reliably — the core Drawer treated the opening click itself as an outside click; drawers now open one tick later and opening clicks are marked handled.
 
