@@ -1,3 +1,8 @@
+> **This extension has moved to the Freelens organisation.**
+> Code, issues and releases now live at **[freelensapp/freelens-rabbitmq-extension](https://github.com/freelensapp/freelens-rabbitmq-extension)**,
+> and the npm package is **`@freelensapp/rabbitmq-extension`** (install it by that name from the Freelens Extensions page).
+> `@tal-naeh/freelens-rabbitmq-extension` is deprecated and will not receive updates. This repository is kept as an archive of the original development history.
+
 # Freelens RabbitMQ Extension
 
 [![npm](https://img.shields.io/npm/v/%40tal-naeh%2Ffreelens-rabbitmq-extension)](https://www.npmjs.com/package/@tal-naeh/freelens-rabbitmq-extension)
